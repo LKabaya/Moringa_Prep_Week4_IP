@@ -19,3 +19,21 @@
               import pandas as pd
               import pandas_profiling
               import numpy as np
+## descriptive statistics:
+       profile=pandas_profiling.ProfileReport(auto_lib)
+       profile_to.html('autolib.html')
+## data cleaning:
+       #Check for completeness: missing values
+              auto_lib.isnull().sum()
+              
+       #drop duplicated rows:
+              auto_lib[auto_lib.duplicated(subset=None, keep= 'first')]
+
+       #Validity: Drop unnecessary columns not needed to anser our questions:
+             auto_lib.drop(['Address','Bluecar counter','Charge Slots', 'Charging Status','Public name','Displayed                   comment','Scheduled at', 'Subscription status','Station type','Geo point'], axis=1, inplace=True)
+             
+             #check for accuracy: Remove outliers
+              Q1= auto_lib.quantile(0.25)
+              Q3= auto_lib.quantile(0.75)
+              IQR= Q3-Q1
+              auto_lib= auto_lib[~((auto_lib < (Q1- 1.5*IQR))|(auto_lib > (Q3 + 1.5*IQR))).any(axis=1)]
